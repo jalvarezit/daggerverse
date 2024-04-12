@@ -1,0 +1,6 @@
+{
+  "name": "podman",
+  "sdk": "go",
+  "source": "dagger",
+  "engineVersion": "v0.10.0"
+}
