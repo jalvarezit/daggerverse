@@ -10,8 +10,19 @@ func (m *Podman) TcpService(
 	// +optional
 	// +default=1337
 	port int,
+
+	// List of images to pull
+	// +optional
+	image []string,
 ) *Service {
 
-	return dag.Container().From("quay.io/podman/stable").WithExec([]string{"podman", "system", "service", fmt.Sprintf("tcp://0.0.0.0:%d", port), "--time", "0"}, ContainerWithExecOpts{InsecureRootCapabilities: true}).WithExposedPort(port).AsService()
+	ctr := dag.Container().From("quay.io/podman/stable")
+
+	// Install images
+	for _, img := range image {
+		ctr = ctr.WithExec([]string{"podman", "pull", img}, ContainerWithExecOpts{InsecureRootCapabilities: true})
+	}
+
+	return ctr.WithExec([]string{"podman", "system", "service", fmt.Sprintf("tcp://0.0.0.0:%d", port), "--time", "0"}, ContainerWithExecOpts{InsecureRootCapabilities: true}).WithExposedPort(port).AsService()
 
 }
