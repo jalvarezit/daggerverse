@@ -1,0 +1,12 @@
+{
+  "name": "container-structure-test",
+  "sdk": "go",
+  "dependencies": [
+    {
+      "name": "podman",
+      "source": "github.com/jalvarezit/daggerverse/podman@8592735e0ce262767c29b7bcdc3ec4936ded6dcd"
+    }
+  ],
+  "source": "dagger",
+  "engineVersion": "v0.10.0"
+}
