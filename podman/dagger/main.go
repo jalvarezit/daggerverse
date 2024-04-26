@@ -11,15 +11,25 @@ func (m *Podman) TcpService(
 	// +default=1337
 	port int,
 
+	// Podman image to use
+	// +optional
+	// +default="quay.io/podman/stable"
+	image string,
+
+	// Podman tag to use
+	// +optional
+	// +default="latest"
+	tag string,
+
 	// List of images to pull
 	// +optional
-	image []string,
+	pullImage []string,
 ) *Service {
 
-	ctr := dag.Container().From("quay.io/podman/stable")
+	ctr := dag.Container().From(fmt.Sprintf("%s:%s", image, tag))
 
 	// Install images
-	for _, img := range image {
+	for _, img := range pullImage {
 		ctr = ctr.WithExec([]string{"podman", "pull", img}, ContainerWithExecOpts{InsecureRootCapabilities: true})
 	}
 
